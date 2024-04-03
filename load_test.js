@@ -10,27 +10,25 @@ const headers = {
   "Content-Type": `multipart/form-data; boundary=${formData.boundary}`
 }
 
+export const options = {
+  // A number specifying the number of VUs to run concurrently.
+  vus: 1000,
+  // A string specifying the total duration of the test run.
+  duration: '30m',
+};
+
 export default function () {
  
   const data = { name: 'hello', description: 'world' }
-  const response = http.get('https://www.google.com')
-  // check(response, { 'success login': (r) => r.status === 200 })
+  const response = http.get('http://localhost:5173')
+  // console.log(response.status)
+  check(response, { 'success login': (response) => response.status === 200 })
   sleep(0.3)
 }
 
-// const fetch = require('node-fetch');
+//      
+// ✗ success login for 10000 vus and 30 seconds
+//       ↳  88% — ✓ 36784 / ✗ 4838
 
-// res = fetch('http://localhost:5173/index.html', {
-//   method: 'GET', // or 'POST'
-//   headers: {
-//     'Content-Type': 'application/json',
-//     // 'Content-Type': 'application/x-www-form-urlencoded',
-//   },
-// })
-// .then(response => response.text())
-// .then(data => console.log(data))
-// .catch((error) => {
-//   console.error('Error:', error);
-// });
-
-// console.log(res);
+// ✗ success login for 1000 vus and 30 minutes
+//   ↳  100% — ✓ 3556330     ✗ 0
